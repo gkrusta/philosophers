@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/24 18:36:49 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/09/25 15:20:52 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,26 @@
 struct t_philo
 
 typedef struct s_main {
+	int			num_philos;
 	int				philo_dead;
 	long long		start_t;
-	t_input			input;
-	t_philo			*philo;
+	pthread_t		id;
+	t_philo			philo[200];
+	int				life_f;
+	int				eat_t;
+	int				sleep_t;
+	int				meals;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	write;
-}				t_main
+	pthread_mutex_t	*write;
+}					t_main
 
 typedef struct s_philo {
-	int		num_philos;
-	pthread_t	id;
-	int	philosophers;
-	int	life_f;
-	int	eat_t;
-	int	sleep_t;
-	int	meals;
-	//int	think_t;
-	int	left_f;
-	int	right_f;
-}		t_philo;
+	int				id;
+	int				nb_eat;
+	int				left_f;
+	int				right_f;
+	struct t_main	*rule;
+}					t_philo;
 
 /* initiliaze philosophers */
 int		create_philos(t_main *main);
