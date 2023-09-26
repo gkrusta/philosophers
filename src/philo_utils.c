@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 12:53:34 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/24 18:23:36 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/09/25 16:40:32 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,22 @@ void	usage(void)
 	printf("./philo number_of_philosophers time_to_die time_to_eat ");
 	printf("time_to_sleep [number_of_meals]\n");
 	printf("number of philosophers: 1-200\n");
-	printf("the rest of the parametrs has to be > 0 which will be representing miliseconds\n")
+	printf("the rest of the parametrs has to be > 0 which will be representing miliseconds\n");
 	printf("-----------------\n");
 }
 
 int	argv_check(char **argv)
 {
 	int	i;
-	int	j
+	int	j;
+
+	i = 0;
 	while (argv[i])
 	{
+		j = 0;
 		while (argv[i][j])
 		{
-			while (argv[i][j] = ' ')
+			while (argv[i][j] == ' ')
 				j++;
 			while (argv[i][j] >= '0' && argv[i][j] <= '9')
 			{
