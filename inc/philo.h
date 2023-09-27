@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/26 16:08:35 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/09/27 13:17:42 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ typedef struct		s_philo {
 	int				last_meal;
 	int				left_f;
 	int				right_f;
-	t_main			*rule;
+	struct s_main	*rule;
+	pthread_t		p_id;
 }					t_philo;
 
 typedef struct		s_main {
 	int				num_philos;
 	int				dead_flag;
 	u_int64_t		start_t;
-	pthread_t		id;
 	t_philo			philo[200];
 	int				life_t;
 	int				eat_t;

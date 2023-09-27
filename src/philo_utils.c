@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 12:53:34 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/25 16:40:32 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/09/27 12:41:41 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,15 @@ int	argv_check(char **argv)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	while (argv[i])
 	{
 		j = 0;
 		while (argv[i][j])
 		{
-			while (argv[i][j] == ' ')
-				j++;
-			while (argv[i][j] >= '0' && argv[i][j] <= '9')
-			{
-				if (argv[i][j] <= '0' || argv[i][j] >= '9')
-					return (1);
-				j++;
-			}
+			if (!(argv[i][j] >= '0' || argv[i][j] <= '9'))
+				return (1);
+			j++;
 		}
 		i++;
 	}

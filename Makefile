@@ -6,14 +6,14 @@
 #    By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/24 13:15:24 by gkrusta           #+#    #+#              #
-#    Updated: 2023/09/24 13:17:05 by gkrusta          ###   ########.fr        #
+#    Updated: 2023/09/27 13:14:14 by gkrusta          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 HEADERS = -I./inc
 

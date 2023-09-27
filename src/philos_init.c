@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/26 14:23:18 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/09/27 13:55:29 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	create_philos(t_main *p)
 	int	i;
 	int	j;
 
-	//p->philo = malloc(sizeof(t_philo) * (p->num_philos));
+/* 	p->philo = malloc(sizeof(t_philo) * (p->num_philos));
 	if (p->philo == NULL)
-		return (1);
+		return (1); */
 	i = 0;
 	j = 1;
 	while (j < p->num_philos)
@@ -67,12 +67,12 @@ int	create_mutex(t_main *p)
 	{
 		if (pthread_mutex_init(&(p->forks[i]), NULL) != 0)
 			return (1);
+		i++;
+	}
 		if (pthread_mutex_init(&(p->write), NULL) != 0)
 			return (1);
 		if (pthread_mutex_init(&(p->eating), NULL) != 0)
 			return (1);
-		i++;
-	}
 	return (0);
 }
 
@@ -80,8 +80,8 @@ void	fill_philo_struct(t_main *p, int i, int j)
 {
 	p->philo[i].id = i + 1;
 	p->philo[i].nb_eat = 0;
-	//p->philo[i].life_t = 0;
 	p->philo[i].left_f = i;
 	p->philo[i].right_f = j;
-	//p->philo[i].rules = 0;
+	p->philo[i].last_meal = 0;
+	p->philo[i].rule = p;
 }
