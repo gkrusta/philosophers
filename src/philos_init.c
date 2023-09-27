@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/27 13:55:29 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/09/27 16:12:12 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ int	create_mutex(t_main *p)
 			return (1);
 		i++;
 	}
-		if (pthread_mutex_init(&(p->write), NULL) != 0)
-			return (1);
-		if (pthread_mutex_init(&(p->eating), NULL) != 0)
-			return (1);
+	if (pthread_mutex_init(&(p->write), NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(&(p->eating), NULL) != 0)
+		return (1);
 	return (0);
 }
 
