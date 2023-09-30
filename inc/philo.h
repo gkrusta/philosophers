@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/27 13:17:42 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/09/30 18:22:07 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ typedef struct		s_philo {
 typedef struct		s_main {
 	int				num_philos;
 	int				dead_flag;
-	u_int64_t		start_t;
 	t_philo			philo[200];
+	u_int64_t		start_t;
 	int				life_t;
 	int				eat_t;
 	int				sleep_t;
@@ -54,9 +54,10 @@ void	fill_philo_struct(t_main *p, int i, int j);
 int		create_mutex(t_main *p);
 
 /* utils */
-void	usage(void);
-int		argv_check(char **argv);
-int		ft_atoi(const char	*str);
-u_int64_t	get_time(void);
+void			usage(void);
+int				argv_check(char **argv);
+int				ft_atoi(const char	*str);
+long long int	get_time(void);
+void			ft_usleep(int dead_flag, long long int time);
 
 #endif
