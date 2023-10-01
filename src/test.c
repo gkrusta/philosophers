@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/01 15:03:28 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/01 16:32:33 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	*eating(t_philo *p)
 	action(p, 'e');
 	p->nb_eat++;
 	pthread_mutex_unlock(&(p->rule->eating));
-	ft_usleep(p->rule->dead_flag, p->rule->eat_t * 1000);
+	ft_usleep(p->rule->dead_flag, p->rule->eat_t);
 	pthread_mutex_unlock(&(p->rule->forks[p->right_f]));
 	pthread_mutex_unlock(&(p->rule->forks[p->left_f]));
 	return (NULL);
@@ -83,7 +83,7 @@ void	*routine(void *void_p)
 		if (p->nb_eat < p->rule->meals)
 			break;
 		action(p, 's');
-		ft_usleep(p->rule->dead_flag, p->rule->sleep_t * 1000);
+		ft_usleep(p->rule->dead_flag, p->rule->sleep_t);
 		action(p, 't');
 	}
 	return (NULL);
@@ -93,6 +93,7 @@ void	*routine(void *void_p)
 void	death_check(t_main *p, t_philo *philo)
 {
 	int	i;
+	long long	diff;
 
 	i = 0;
 	while (p->done_eating == 0)
@@ -102,7 +103,9 @@ void	death_check(t_main *p, t_philo *philo)
 		while (i < p->num_philos && p->dead_flag == 0)
 		{
 			pthread_mutex_lock(&(p->eating));
-			if (get_time() - philo[i].last_meal > p->life_t)
+			diff = get_time() - philo[i].last_meal;
+			printf("* id %d* diff is %lld and last meals was %lld and life_t is %d\n", philo->id, diff, philo[i].last_meal, p->life_t);
+			if (diff > p->life_t)
 			{
 				action(philo, 'd');
 				p->dead_flag = 1;
@@ -116,7 +119,10 @@ void	death_check(t_main *p, t_philo *philo)
 			break ;
 		i = 0;
 		while (i < p->num_philos && p->meals >= philo->nb_eat)
+		{
+			printf("here\n");
 			i++;
+		}
 		if (i == p->num_philos)
 			p->done_eating = 1;
 	}
@@ -133,9 +139,10 @@ int	start(t_main *p)
 	{
 		if (pthread_create(&(p->philo[i].p_id), NULL, routine, &(p->philo[i])) != 0)
 			return (1);
+		p->philo[i].last_meal = get_time(); // whyy
 		i++;
 	}
-	death_check(p, p->philo);
+	death_check(p, p->philo); 
 	i = 0;
 	while (i < p->num_philos)
 	{

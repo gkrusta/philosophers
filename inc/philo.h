@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/01 14:02:53 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/01 16:08:40 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		create_mutex(t_main *p);
 void			usage(void);
 int				argv_check(char **argv);
 int				ft_atoi(const char	*str);
-long long	get_time(void);
+long long		get_time(void);
 void			ft_usleep(int dead_flag, long long int time);
 
 #endif
