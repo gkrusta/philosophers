@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/30 18:22:07 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/01 14:02:53 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ struct s_main;
 typedef struct		s_philo {
 	int				id;
 	int				nb_eat;
-	int				last_meal;
+	long long		last_meal;
 	int				left_f;
 	int				right_f;
 	struct s_main	*rule;
@@ -36,8 +36,9 @@ typedef struct		s_philo {
 typedef struct		s_main {
 	int				num_philos;
 	int				dead_flag;
+	int				done_eating;
 	t_philo			philo[200];
-	u_int64_t		start_t;
+	long long		start_t;
 	int				life_t;
 	int				eat_t;
 	int				sleep_t;
@@ -57,7 +58,7 @@ int		create_mutex(t_main *p);
 void			usage(void);
 int				argv_check(char **argv);
 int				ft_atoi(const char	*str);
-long long int	get_time(void);
+long long	get_time(void);
 void			ft_usleep(int dead_flag, long long int time);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/27 16:12:12 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/01 14:02:53 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	init(char **argv, t_main *p)
 	p->life_t = ft_atoi(argv[2]);
 	p->eat_t = ft_atoi(argv[3]);
 	p->sleep_t = ft_atoi(argv[4]);
+	p->done_eating = 0;
+	p->dead_flag = 0;
 	if (argv[5])
 	{
 		p->meals = ft_atoi(argv[5]);
