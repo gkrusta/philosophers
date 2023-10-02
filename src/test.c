@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/01 16:32:33 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/02 14:38:54 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,22 @@ long long	get_time(void)
 void	action(t_philo *p, int c)
 {
 	pthread_mutex_lock(&(p->rule->write));
-	if (c == 'f')
-		printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "has taken a fork");
-	if (c == 'e')
-		printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is eating");
-	if (c == 's')
-		printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is sleeping");
-	if (c == 't')
-		printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is thinking");
-	if (c == 'd')
-		printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "died");
+	if (!(p->rule->dead_flag) && !(p->rule->done_eating))
+	{
+		if (c == 'f')
+			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "has taken a fork");
+		else if (c == 'e')
+			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is eating");
+		else if (c == 's')
+			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is sleeping");
+		else if (c == 't')
+			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is thinking");
+		else if (c == 'd')
+		{
+			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "died");
+			//return ;
+		}
+	}
 	pthread_mutex_unlock(&(p->rule->write));
 
 }
@@ -58,7 +64,7 @@ void	*eating(t_philo *p)
 	}
 	pthread_mutex_lock(&(p->rule->eating));
 	p->last_meal = get_time();
-	printf("last time nb %d ate was %lld\n", p->id, p->last_meal);
+	//printf("last time nb %d ate was %lld\n", p->id, p->last_meal);
 	action(p, 'e');
 	p->nb_eat++;
 	pthread_mutex_unlock(&(p->rule->eating));
@@ -77,11 +83,14 @@ void	*routine(void *void_p)
 	i = 0;
 	if (p->id % 2 == 0) // index instead of num
 		usleep(1000); // so the second philo doesn't take the fork of the first one
-	while (p->rule->dead_flag == 0)
+	while (p->rule->dead_flag == 0 && p->rule->meals > p->nb_eat)
 	{
 		eating(p);
-		if (p->nb_eat < p->rule->meals)
-			break;
+		if (p->id == 2 && p->nb_eat == 3)
+			printf("DONE\n");
+/* 		if (p->rule->done_eating == 1 || p->rule->dead_flag == 1)
+			break; */
+		//printf("id is %d, meals is %d and nb_eat is %d\n", p->id, p->rule->meals, p->nb_eat);
 		action(p, 's');
 		ft_usleep(p->rule->dead_flag, p->rule->sleep_t);
 		action(p, 't');
@@ -89,13 +98,13 @@ void	*routine(void *void_p)
 	return (NULL);
 }
 
-//here :**
+
 void	death_check(t_main *p, t_philo *philo)
 {
-	int	i;
+	int			i;
 	long long	diff;
 
-	i = 0;
+	//i = 0;
 	while (p->done_eating == 0)
 	{
 		//printf("hello from death check\n");
@@ -104,25 +113,27 @@ void	death_check(t_main *p, t_philo *philo)
 		{
 			pthread_mutex_lock(&(p->eating));
 			diff = get_time() - philo[i].last_meal;
-			printf("* id %d* diff is %lld and last meals was %lld and life_t is %d\n", philo->id, diff, philo[i].last_meal, p->life_t);
+			//printf("* counter i is %d, id %d*, diff is %lld and last meals was %lld and life_t is %d\n", i, philo[i].id, diff, philo[i].last_meal, p->life_t);
 			if (diff > p->life_t)
 			{
-				action(philo, 'd');
+				action(&philo[i], 'd');
 				p->dead_flag = 1;
-				
 			}
 			pthread_mutex_unlock(&(p->eating));
 			i++;
-			usleep(100);
+			usleep(500);
 		}
 		if (p->dead_flag == 1)
 			break ;
+		//i--;
+		//printf("id is %d, meals is %d and nb_eat is %d\n", philo[i].id, p->meals, philo[i].nb_eat);
 		i = 0;
-		while (i < p->num_philos && p->meals >= philo->nb_eat)
+		while (i < p->num_philos && p->meals <= philo[i].nb_eat) // go to the next philo
 		{
-			printf("here\n");
 			i++;
+			printf("here id is %d\n", philo[i].id);
 		}
+		//printf("i = %d\n", i);
 		if (i == p->num_philos)
 			p->done_eating = 1;
 	}
@@ -139,7 +150,7 @@ int	start(t_main *p)
 	{
 		if (pthread_create(&(p->philo[i].p_id), NULL, routine, &(p->philo[i])) != 0)
 			return (1);
-		p->philo[i].last_meal = get_time(); // whyy
+		//p->philo[i].last_meal = get_time(); 
 		i++;
 	}
 	death_check(p, p->philo); 

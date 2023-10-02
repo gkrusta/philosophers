@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/01 14:02:53 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/02 10:55:01 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	fill_philo_struct(t_main *p, int i, int j)
 	p->philo[i].nb_eat = 0;
 	p->philo[i].left_f = i;
 	p->philo[i].right_f = j;
-	p->philo[i].last_meal = 0;
+	p->philo[i].last_meal = get_time();
 	p->philo[i].rule = p;
 }
