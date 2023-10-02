@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/02 14:38:54 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/02 18:15:03 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,8 @@ void	*routine(void *void_p)
 	while (p->rule->dead_flag == 0 && p->rule->meals > p->nb_eat)
 	{
 		eating(p);
-		if (p->id == 2 && p->nb_eat == 3)
-			printf("DONE\n");
-/* 		if (p->rule->done_eating == 1 || p->rule->dead_flag == 1)
-			break; */
+		if (p->rule->done_eating == 1 || p->rule->dead_flag == 1)
+			break;
 		//printf("id is %d, meals is %d and nb_eat is %d\n", p->id, p->rule->meals, p->nb_eat);
 		action(p, 's');
 		ft_usleep(p->rule->dead_flag, p->rule->sleep_t);
@@ -114,14 +112,14 @@ void	death_check(t_main *p, t_philo *philo)
 			pthread_mutex_lock(&(p->eating));
 			diff = get_time() - philo[i].last_meal;
 			//printf("* counter i is %d, id %d*, diff is %lld and last meals was %lld and life_t is %d\n", i, philo[i].id, diff, philo[i].last_meal, p->life_t);
-			if (diff > p->life_t)
+			if (diff >= p->life_t)
 			{
 				action(&philo[i], 'd');
 				p->dead_flag = 1;
 			}
 			pthread_mutex_unlock(&(p->eating));
 			i++;
-			usleep(500);
+			usleep(100);
 		}
 		if (p->dead_flag == 1)
 			break ;
@@ -130,6 +128,7 @@ void	death_check(t_main *p, t_philo *philo)
 		i = 0;
 		while (i < p->num_philos && p->meals <= philo[i].nb_eat) // go to the next philo
 		{
+			printf("here id is %d\n", philo[i].id);
 			i++;
 			printf("here id is %d\n", philo[i].id);
 		}
@@ -145,7 +144,7 @@ int	start(t_main *p)
 
 	i = 0;
 	p->start_t = get_time();
-	printf("start time is %lld\n", p->start_t);
+	//printf("start time is %lld\n", p->start_t);
 	while (i < p->num_philos)
 	{
 		if (pthread_create(&(p->philo[i].p_id), NULL, routine, &(p->philo[i])) != 0)
@@ -192,5 +191,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	start(p);
+	free(p);
 	return (0);
 }
