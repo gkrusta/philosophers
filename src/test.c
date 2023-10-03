@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/02 18:15:03 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/03 18:06:31 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,58 +20,56 @@ long long	get_time(void)
 	return ((tp.tv_sec * 1000) + (tp.tv_usec / 1000));
 }
 
-void	action(t_philo *p, int c)
+void	action(t_philo *p, char *str)
 {
-	pthread_mutex_lock(&(p->rule->write));
+	pthread_mutex_lock(&(p->rule->death));
 	if (!(p->rule->dead_flag) && !(p->rule->done_eating))
-	{
-		if (c == 'f')
-			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "has taken a fork");
-		else if (c == 'e')
-			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is eating");
-		else if (c == 's')
-			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is sleeping");
-		else if (c == 't')
-			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "is thinking");
-		else if (c == 'd')
-		{
-			printf("%lld  %d %s\n", (get_time() - p->rule->start_t), p->id, "died");
-			//return ;
-		}
-	}
-	pthread_mutex_unlock(&(p->rule->write));
+		printf("%lld %d %s\n", (get_time() - p->rule->start_t), p->id, str);
+	pthread_mutex_unlock(&(p->rule->death));
 
 }
 
 void	*eating(t_philo *p)
 {
-/* 	t_philo	*philo;
+	t_main	*philo_eat;
 
-	philo = p->rule; */
+	philo_eat = p->rule;
 	if (p->id % 2 == 1)
 	{
-		pthread_mutex_lock(&(p->rule->forks[p->left_f]));
-		action(p, 'f');
-		pthread_mutex_lock(&(p->rule->forks[p->right_f]));
-		action(p, 'f');
+		pthread_mutex_lock(&(philo_eat->forks[p->left_f]));
+		action(p, "has taken a fork");
+		if (p->right_f == -1)
+			return (NULL);
+		pthread_mutex_lock(&(philo_eat->forks[p->right_f]));
+		action(p, "has taken a fork");
 	}
 	else
 	{
-		pthread_mutex_lock(&(p->rule->forks[p->right_f]));
-		action(p, 'f');
-		pthread_mutex_lock(&(p->rule->forks[p->left_f]));
-		action(p, 'f');
+		pthread_mutex_lock(&(philo_eat->forks[p->right_f]));
+		action(p, "has taken a fork");
+		pthread_mutex_lock(&(philo_eat->forks[p->left_f]));
+		action(p, "has taken a fork");
 	}
-	pthread_mutex_lock(&(p->rule->eating));
+	pthread_mutex_lock(&(philo_eat->eating));
 	p->last_meal = get_time();
 	//printf("last time nb %d ate was %lld\n", p->id, p->last_meal);
-	action(p, 'e');
+	action(p, "is eating");
+	pthread_mutex_lock(&(philo_eat->nb_eat));
 	p->nb_eat++;
-	pthread_mutex_unlock(&(p->rule->eating));
-	ft_usleep(p->rule->dead_flag, p->rule->eat_t);
-	pthread_mutex_unlock(&(p->rule->forks[p->right_f]));
-	pthread_mutex_unlock(&(p->rule->forks[p->left_f]));
+	pthread_mutex_unlock(&(philo_eat->nb_eat));
+	pthread_mutex_unlock(&(philo_eat->eating));
+	ft_usleep(philo_eat->eat_t);
+	pthread_mutex_unlock(&(philo_eat->forks[p->right_f]));
+	pthread_mutex_unlock(&(philo_eat->forks[p->left_f]));
 	return (NULL);
+}
+
+void	eat_one(t_philo *p)
+{
+	pthread_mutex_lock(&(p->rule->forks[p->left_f]));
+	action(p, "has taken a fork");
+	usleep(p->rule->life_t * 1000);
+	pthread_mutex_unlock(&(p->rule->forks[p->left_f]));
 }
 
 void	*routine(void *void_p)
@@ -81,18 +79,23 @@ void	*routine(void *void_p)
 
 	p = (t_philo *)void_p;
 	i = 0;
-	if (p->id % 2 == 0) // index instead of num
-		usleep(1000); // so the second philo doesn't take the fork of the first one
-	while (p->rule->dead_flag == 0 && p->rule->meals > p->nb_eat)
+	//if (p->id % 2 == 0) // index instead of num
+		//usleep(1000); // so the second philo doesn't take the fork of the first one
+	if (p->rule->num_philos == 1)
+		eat_one(p);
+	while (1)
 	{
 		eating(p);
+		pthread_mutex_lock(&(p->rule->death));
 		if (p->rule->done_eating == 1 || p->rule->dead_flag == 1)
 			break;
+		pthread_mutex_unlock(&(p->rule->death));
 		//printf("id is %d, meals is %d and nb_eat is %d\n", p->id, p->rule->meals, p->nb_eat);
-		action(p, 's');
-		ft_usleep(p->rule->dead_flag, p->rule->sleep_t);
-		action(p, 't');
+		action(p, "is sleeping");
+		ft_usleep(p->rule->sleep_t);
+		action(p, "is thinking");
 	}
+	pthread_mutex_unlock(&(p->rule->death));
 	return (NULL);
 }
 
@@ -112,12 +115,14 @@ void	death_check(t_main *p, t_philo *philo)
 			pthread_mutex_lock(&(p->eating));
 			diff = get_time() - philo[i].last_meal;
 			//printf("* counter i is %d, id %d*, diff is %lld and last meals was %lld and life_t is %d\n", i, philo[i].id, diff, philo[i].last_meal, p->life_t);
+			pthread_mutex_unlock(&(p->eating));
 			if (diff >= p->life_t)
 			{
-				action(&philo[i], 'd');
+ 				action(&philo[i], "died");
+				pthread_mutex_lock(&(p->death));
 				p->dead_flag = 1;
+				pthread_mutex_unlock(&(p->death));
 			}
-			pthread_mutex_unlock(&(p->eating));
 			i++;
 			usleep(100);
 		}
@@ -126,15 +131,15 @@ void	death_check(t_main *p, t_philo *philo)
 		//i--;
 		//printf("id is %d, meals is %d and nb_eat is %d\n", philo[i].id, p->meals, philo[i].nb_eat);
 		i = 0;
-		while (i < p->num_philos && p->meals <= philo[i].nb_eat) // go to the next philo
-		{
-			printf("here id is %d\n", philo[i].id);
+		pthread_mutex_lock(&(p->nb_eat));
+		while (i < p->num_philos && p->meals <= philo[i].nb_eat && p->meals != -1) // go to the next philo
 			i++;
-			printf("here id is %d\n", philo[i].id);
-		}
+		pthread_mutex_unlock(&(p->nb_eat));
 		//printf("i = %d\n", i);
+		pthread_mutex_lock(&(p->death));
 		if (i == p->num_philos)
 			p->done_eating = 1;
+		pthread_mutex_unlock(&(p->death));
 	}
 }
 
@@ -167,7 +172,7 @@ int	start(t_main *p)
 			return (1);
 		i++;
 	}
-	if (pthread_mutex_destroy(&(p->write)) != 0)
+	if (pthread_mutex_destroy(&(p->death)) != 0)
 		return (1);
 	if (pthread_mutex_destroy(&(p->eating)) != 0)
 		return (1);

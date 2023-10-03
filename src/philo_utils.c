@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 12:53:34 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/09/30 18:26:17 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/03 18:02:18 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	usage(void)
 	printf("-----------------\n");
 }
 
-void	ft_usleep(int dead_flag, long long int time)
+void	ft_usleep(long long int time)
 {
 	long long int	i;
 
 	i = get_time();
-	while (dead_flag != 1)
+	while (1)
 	{
 		if (get_time() - i >= time)
 			break;

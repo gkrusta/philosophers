@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/01 16:08:40 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/03 17:24:58 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ typedef struct		s_main {
 	int				sleep_t;
 	int				meals;
 	pthread_mutex_t	forks[200];
-	pthread_mutex_t	write;
+	pthread_mutex_t	nb_eat;
 	pthread_mutex_t	eating;
+	pthread_mutex_t	death;
 }					t_main;
 
 /* initiliaze philosophers */
@@ -59,6 +60,6 @@ void			usage(void);
 int				argv_check(char **argv);
 int				ft_atoi(const char	*str);
 long long		get_time(void);
-void			ft_usleep(int dead_flag, long long int time);
+void			ft_usleep(long long int time);
 
 #endif
