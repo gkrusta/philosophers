@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/03 17:57:21 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/04 12:50:18 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,17 @@ int	init(char **argv, t_main *p)
 	{
 		p->meals = ft_atoi(argv[5]);
 		if (p->meals < 1)
+		{
+			usage();
 			return (1);
+		}
 	}
 	else
 		p->meals = -1;
-	if (p->num_philos < 1 || p->life_t <= 0 || p->eat_t <= 0 || p->sleep_t <= 0)
+	if (p->num_philos < 1 || p->num_philos > 200 || p->life_t < 1
+		|| p->eat_t < 1 || p->sleep_t < 1)
 	{
-		//free(p);
-		//usage();
+		usage();
 		return(1);
 	}
 	create_philos(p);
@@ -44,9 +47,6 @@ int	create_philos(t_main *p)
 	int	i;
 	int	j;
 
-/* 	p->philo = malloc(sizeof(t_philo) * (p->num_philos));
-	if (p->philo == NULL)
-		return (1); */
 	i = 0;
 	j = 1;
 	while (j < p->num_philos)
@@ -84,10 +84,10 @@ void	fill_philo_struct(t_main *p, int i, int j)
 {
 	p->philo[i].id = i + 1;
 	p->philo[i].nb_eat = 0;
-	p->philo[i].left_f = j;
 	p->philo[i].right_f = i;
-	if (p->num_philos == 1)
+	if (p->num_philos == 1) //
 		p->philo[i].right_f = -1;
+	p->philo[i].left_f = j;
 	p->philo[i].last_meal = get_time();
 	p->philo[i].rule = p;
 }

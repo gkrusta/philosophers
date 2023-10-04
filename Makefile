@@ -6,18 +6,18 @@
 #    By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/24 13:15:24 by gkrusta           #+#    #+#              #
-#    Updated: 2023/10/03 15:47:47 by gkrusta          ###   ########.fr        #
+#    Updated: 2023/10/04 13:20:51 by gkrusta          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror ##-g3 -fsanitize=thread
 
 HEADERS = -I./inc
 
-SRCS = $(wildcard src/*.c)
+SRCS = src/main.c src/routine.c src/philo_init.c src/philo_utils.c src/death_checker.c
 
 OBJS = $(SRCS:.c=.o)
 

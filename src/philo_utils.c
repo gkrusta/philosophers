@@ -6,21 +6,29 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 12:53:34 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/03 18:02:18 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/04 13:03:18 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	usage(void)
+void	usage()
 {
 	printf("-----------------\n");
 	printf("- How to use:\n");
 	printf("./philo number_of_philosophers time_to_die time_to_eat ");
 	printf("time_to_sleep [number_of_meals]\n");
 	printf("number of philosophers: 1-200\n");
-	printf("the rest of the parametrs has to be > 0 which will be representing miliseconds\n");
+	printf("the rest of the parametrs has to be > 60 which will be representing miliseconds\n");
 	printf("-----------------\n");
+}
+
+long long	get_time(void)
+{
+	struct timeval	tp;
+	
+	gettimeofday(&tp, NULL);
+	return ((tp.tv_sec * 1000) + (tp.tv_usec / 1000));
 }
 
 void	ft_usleep(long long int time)
@@ -47,7 +55,7 @@ int	argv_check(char **argv)
 		j = 0;
 		while (argv[i][j])
 		{
-			if (!(argv[i][j] >= '0' || argv[i][j] <= '9'))
+			if (!(argv[i][j] >= '0' && argv[i][j] <= '9'))
 				return (1);
 			j++;
 		}
