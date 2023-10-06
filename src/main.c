@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/04 13:04:38 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/06 17:11:29 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	control_threads(t_main *p)
 			return (1);
 		i++;
 	}
-	if (pthread_mutex_destroy(&(p->death)) != 0)
+	if (pthread_mutex_destroy(&(p->done)) != 0)
 		return (1);
 	if (pthread_mutex_destroy(&(p->eating)) != 0)
 		return (1);

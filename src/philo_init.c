@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philos_init.c                                      :+:      :+:    :+:   */
+/*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/04 12:50:18 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/06 18:45:23 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	create_philos(t_main *p)
 		j++;
 	}
 	j = 0;
-	fill_philo_struct(p, i, j);
+	fill_philo_struct(p, i, j); // for the last philospher and if there is only 1 of them
 	return (0);
 }
 
@@ -75,7 +75,7 @@ int	create_mutex(t_main *p)
 		return (1);
 	if (pthread_mutex_init(&(p->eating), NULL) != 0)
 		return (1);
-	if (pthread_mutex_init(&(p->death), NULL) != 0)
+	if (pthread_mutex_init(&(p->done), NULL) != 0)
 		return (1);
 	return (0);
 }
@@ -85,8 +85,6 @@ void	fill_philo_struct(t_main *p, int i, int j)
 	p->philo[i].id = i + 1;
 	p->philo[i].nb_eat = 0;
 	p->philo[i].right_f = i;
-	if (p->num_philos == 1) //
-		p->philo[i].right_f = -1;
 	p->philo[i].left_f = j;
 	p->philo[i].last_meal = get_time();
 	p->philo[i].rule = p;

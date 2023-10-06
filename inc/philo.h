@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/04 13:10:32 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/06 17:03:26 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct		s_main {
 	pthread_mutex_t	forks[200];
 	pthread_mutex_t	nb_eat;
 	pthread_mutex_t	eating;
-	pthread_mutex_t	death;
+	pthread_mutex_t	done;
 }					t_main;
 
 /* thread management */
