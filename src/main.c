@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/06 17:11:29 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/06 18:47:09 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@ int	control_threads(t_main *p)
 	return (0);
 }
 
-void	ft_leaks(void)
+/* void	ft_leaks(void)
 {
 	system("leaks -q philo");
-}
+} */
 
 int	main(int argc, char **argv)
 {
 	t_main	*p;
 	
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	if (argv_check(argv) == 1 || argc < 5 || argc > 7)
 	{
 		usage();

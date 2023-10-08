@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/06 18:44:25 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/10/08 14:49:54 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ void	*routine(void *void_p)
 
 	p = (t_philo *)void_p;
 	i = 0;
-	if (p->id % 2 == 0)
-		usleep(100); // so the second philo doesn't take the fork of the first one
 	if (p->rule->num_philos == 1)
 		eat_one(p);
 	else
 	{
 		while (1)
 		{
+			if (p->id % 2 == 0)
+				usleep(100); // so the second philo doesn't take the fork of the first one
 			eating(p);
 			pthread_mutex_lock(&(p->rule->done));
 			if (p->rule->done_eating == 1 || p->rule->dead_flag == 1)
