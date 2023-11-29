@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/06 17:03:26 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/11/29 12:36:03 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ typedef struct		s_main {
 
 /* thread management */
 int		control_threads(t_main *p);
+int		destroy_mutex(t_main *p);
 
 /* death checker */
+void	time_over(t_main *p, t_philo *philo);
 void	death_check(t_main *p, t_philo *philo);
 
 /* routine */

@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/22 14:01:06 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/11/28 14:42:26 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	create_philos(t_main *p)
 		j++;
 	}
 	j = 0;
-	fill_philo_struct(p, i, j); // for the last philospher and if there is only 1 of them
+	fill_philo_struct(p, i, j); // for the last philospher or if there is only 1 philo
 	return (0);
 }
 
@@ -73,12 +73,13 @@ int	init(char **argv, t_main *p)
 	else
 		p->meals = -1;
 	if (p->num_philos < 1 || p->num_philos > 200 || p->life_t < 1
-		|| p->eat_t < 1 || p->sleep_t < 1 || p->meals < 1)
+		|| p->eat_t < 1 || p->sleep_t < 1)
 	{
 		usage();
-		return(1);
+		return (1);
 	}
 	create_philos(p);
-	create_mutex(p);
+	if (create_mutex(p) == 1)
+		return (1);
 	return (0);
 }

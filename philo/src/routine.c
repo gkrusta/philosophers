@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/10/08 14:49:54 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:25:28 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	action(t_philo *p, char *str)
 	if (!(p->rule->dead_flag) && !(p->rule->done_eating))
 		printf("%lld %d %s\n", (get_time() - p->rule->start_t), p->id, str);
 	pthread_mutex_unlock(&(p->rule->done));
-
 }
 
 void	eat_one(t_philo *p)
@@ -43,7 +42,7 @@ void	*eating(t_philo *p)
 	action(p, "is eating");
 	pthread_mutex_lock(&(philo_eat->nb_eat));
 	p->nb_eat++;
-	pthread_mutex_unlock(&(philo_eat->nb_eat));
+	pthread_mutex_unlock(&(philo_eat->nb_eat));//switch <->
 	pthread_mutex_unlock(&(philo_eat->eating));
 	ft_usleep(philo_eat->eat_t);
 	pthread_mutex_unlock(&(philo_eat->forks[p->right_f]));
