@@ -6,17 +6,17 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 12:53:34 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/28 13:43:06 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/11/30 13:26:06 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	usage()
 {
 	printf("-----------------\n");
 	printf("- How to use:\n");
-	printf("./philo number_of_philosophers time_to_die time_to_eat ");
+	printf("./philo_bonus number_of_philosophers time_to_die time_to_eat ");
 	printf("time_to_sleep [number_of_meals]\n");
 	printf("number of philosophers: 1-200\n");
 	printf("the rest of the parametrs has to be > 60 which will be representing miliseconds\n");

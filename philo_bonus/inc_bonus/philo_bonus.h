@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/29 13:53:40 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/11/30 17:46:20 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/time.h>
 #include <semaphore.h>
 #include <sys/types.h>
+#include <sys/cdefs.h>
 
 struct s_main;
 
@@ -35,31 +37,32 @@ typedef struct		s_philo {
 
 typedef struct		s_main {
 	int				num_philos;
-	int				dead_flag;
+	bool			dead_flag;
 	int				done_eating;
 	pid_t			*pid;
-	t_philo			philo[200];
+	pthread_t		p_id;
+	t_philo			*philo; // 1 pointer 
 	long long		start_t;
 	int				life_t;
 	int				eat_t;
 	int				sleep_t;
 	int				meals;
-	sem_t			forks[200];
-/* 	pthread_mutex_t	nb_eat;
-	pthread_mutex_t	eating;
-	pthread_mutex_t	done; */
+	sem_t			*forks;
+	sem_t			*nb_eat;
+	sem_t			*eating;
+	sem_t			*done;
 }					t_main;
 
 /* thread management */
-int		control_threads(t_main *p);
+int	close_semaphores(t_main *p);
 
 /* death checker */
 void	time_over(t_main *p, t_philo *philo);
-void	death_check(t_main *p, t_philo *philo);
+void	*death_check(void *void_p);
 
 /* routine */
-void	*routine(void *void_p);
-void	*eating(t_philo *p);
+void	routine(t_philo *p, t_main *philo);
+void	eating(t_philo *p);
 void	eat_one(t_philo *p);
 void	action(t_philo *p, char *str);
 

@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/29 12:34:45 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/11/30 13:19:13 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	control_threads(t_main *p)
 			return (1);
 		i++;
 	}
-	i = 0;
 	if (destroy_mutex(p) == 1)
 		return (1);
 	return (0);

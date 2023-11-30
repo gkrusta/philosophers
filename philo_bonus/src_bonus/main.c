@@ -6,46 +6,28 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/29 15:42:07 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/11/30 18:07:48 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-int	destroy_mutex(t_main *p)
+int	close_semaphores(t_main *p)
 {
 	int	i;
 
 	i = 0;
 	while (i < p->num_philos)
 	{
-		if (pthread_mutex_destroy(&(p->forks[i])) != 0)
+		if (sem_close(&(p->forks[i])) != 0)
 			return (1);
 		i++;
 	}
-	if (pthread_mutex_destroy(&(p->done)) != 0)
+	if (sem_close(p->nb_eat) != 0)
 		return (1);
-	if (pthread_mutex_destroy(&(p->eating)) != 0)
+	if (sem_close(p->eating) != 0)
 		return (1);
-	return (0);
-}
-
-int	philospher_routine(t_main *p)
-{
-	int	i;
-
-	i = 0;
-	p->start_t = get_time();
-	death_check(p, p->philo); 
-	i = 0;
-	while (i < p->num_philos)
-	{
-		if (pthread_join(p->philo[i].p_id, NULL) != 0)
-			return (1);
-		i++;
-	}
-	i = 0;
-	if (destroy_mutex(p) == 1)
+	if (sem_close(p->done) != 0)
 		return (1);
 	return (0);
 }
@@ -75,7 +57,8 @@ int	main(int argc, char **argv)
 	}
 	int	i = 0;
 	create_philos(p);
-	waitpid(p->philo[i].pid, NULL, 0);
+	waitpid(p->pid[i], NULL, 0);
+	close_semaphores(p);
 	free(p);
 	return (0);
 }
