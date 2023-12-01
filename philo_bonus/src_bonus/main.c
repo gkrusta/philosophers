@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/30 18:07:48 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:00:23 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,22 @@ int	close_semaphores(t_main *p)
 
 /* void	ft_leaks(void)
 {
-	system("leaks -q philo");
+	system("leaks -q philo_bonus");
 } */
+
+void	ft_free(t_main *p)
+{
+/* 	int	i;
+
+	i = 0;
+	while (i < p->num_philos)
+	{
+		free(&(p->pid[i]));
+		//free(&(philo[i]));
+		i++;
+	} */
+	free(p);
+}
 
 int	main(int argc, char **argv)
 {
@@ -55,10 +69,14 @@ int	main(int argc, char **argv)
 		free(p);
 		return (1);
 	}
-	int	i = 0;
 	create_philos(p);
-	waitpid(p->pid[i], NULL, 0);
+	int	i = 0;
+	while (i < p->num_philos)
+	{
+		waitpid(-1, NULL, 0);
+		i++;
+	}
 	close_semaphores(p);
-	free(p);
+	ft_free(p);
 	return (0);
 }

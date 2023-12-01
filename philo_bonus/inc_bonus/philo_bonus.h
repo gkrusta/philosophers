@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/30 17:46:20 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:06:17 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct		s_philo {
 typedef struct		s_main {
 	int				num_philos;
 	bool			dead_flag;
-	int				done_eating;
-	pid_t			*pid;
-	pthread_t		p_id;
+	bool			done_eating;
+	pid_t			*pid; // every process (philo) has its pid return from fork
+	pthread_t		p_id; // every philo has its thread to check death and/ or the nr of meals
 	t_philo			*philo; // 1 pointer 
 	long long		start_t;
 	int				life_t;
@@ -69,7 +69,7 @@ void	action(t_philo *p, char *str);
 /* initiliaze philosophers */
 int		init(char **argv, t_main *p);
 int		create_philos(t_main *p);
-void	fill_philo_struct(t_main *p, int i, int j);
+void	fill_philo_struct(t_main *p, int i);
 
 /* utils */
 void		usage();
