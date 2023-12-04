@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/01 15:29:40 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/04 12:52:51 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	create_philos(t_main *p)
 		if (p->pid[i] == 0)
 		{
 			fill_philo_struct(p, i);
-			//printf("I am %i\n", p->philo->id);
 			routine(p->philo, p);
 		}
 		i++;
@@ -63,11 +62,13 @@ int	init(char **argv, t_main *p)
 	}
 	sem_unlink("/forks");
 	sem_unlink("/nb_eat");
+	sem_unlink("/write");
 	sem_unlink("/eating");
 	sem_unlink("/done");
 	p->pid = malloc(sizeof(pid_t) * p->num_philos);
 	p->forks = sem_open("/forks", O_CREAT, 0644, p->num_philos);
 	p->nb_eat = sem_open("/nb_eat", O_CREAT, 0644, 1);
+	p->write = sem_open("/write", O_CREAT, 0644, 1);
 	p->eating = sem_open("/eating", O_CREAT, 0644, 1);
 	p->done = sem_open("/done", O_CREAT, 0644, 1);
 	return (0);

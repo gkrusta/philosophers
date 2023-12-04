@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 12:53:34 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/30 13:26:06 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:43:43 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_usleep(long long int time)
 	{
 		if (get_time() - i >= time)
 			break;
-		usleep(50);
 	}
 }
 

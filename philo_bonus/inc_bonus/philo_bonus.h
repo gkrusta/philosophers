@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/01 15:06:17 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/04 17:47:49 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <semaphore.h>
 #include <sys/types.h>
 #include <sys/cdefs.h>
+#include <signal.h>
 
 struct s_main;
 
@@ -48,6 +49,7 @@ typedef struct		s_main {
 	int				sleep_t;
 	int				meals;
 	sem_t			*forks;
+	sem_t			*write;
 	sem_t			*nb_eat;
 	sem_t			*eating;
 	sem_t			*done;
