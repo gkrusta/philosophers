@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/04 17:47:49 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:58:25 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct		s_philo {
 	int				left_f;
 	int				right_f;
 	struct s_main	*rule;
+	sem_t			*eating;
 }					t_philo;
 
 typedef struct		s_main {
@@ -50,8 +51,6 @@ typedef struct		s_main {
 	int				meals;
 	sem_t			*forks;
 	sem_t			*write;
-	sem_t			*nb_eat;
-	sem_t			*eating;
 	sem_t			*done;
 }					t_main;
 

@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/01 16:00:23 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:29:13 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	close_semaphores(t_main *p)
 		return (1);
 	if (sem_close(p->eating) != 0)
 		return (1);
+	if (sem_close(p->write) != 0)
+		return (1);
 	if (sem_close(p->done) != 0)
 		return (1);
 	return (0);
@@ -44,18 +46,19 @@ void	ft_free(t_main *p)
 	i = 0;
 	while (i < p->num_philos)
 	{
-		free(&(p->pid[i]));
-		//free(&(philo[i]));
+		free(&(philo[i]));
 		i++;
 	} */
+	free(p->philo);
+	free(p->pid);
 	free(p);
 }
 
 int	main(int argc, char **argv)
 {
 	t_main	*p;
-	
-	//atexit(ft_leaks);
+	int		status;
+
 	if (argv_check(argv) == 1 || argc < 5 || argc > 7)
 	{
 		usage();
@@ -73,9 +76,18 @@ int	main(int argc, char **argv)
 	int	i = 0;
 	while (i < p->num_philos)
 	{
-		waitpid(-1, NULL, 0);
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+			printf("El proceso hijo ha salido con estado: %d\n", WEXITSTATUS(status));
+		i = 0;
+		while(i < p->num_philos)
+		{
+			kill(p->pid[i], SIGTERM);
+			i++;
+		}
 		i++;
 	}
+	//atexit(ft_leaks);
 	close_semaphores(p);
 	ft_free(p);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/04 17:47:38 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/05 18:11:48 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,15 @@ void	eating(t_philo *p)
 	action(p, "has taken a fork");
 	sem_wait(philo_eat->forks);
 	action(p, "has taken a fork");
-	sem_wait(philo_eat->eating);
+	sem_wait(p->eating);
 	p->last_meal = get_time(); //dr 2
 	action(p, "is eating");
 	sem_wait(philo_eat->done);
 	p->nb_eat++;
 	if (p->nb_eat >= philo_eat->meals && philo_eat->meals != -1)
-	{
 		philo_eat->done_eating = true;
-	}
 	sem_post(philo_eat->done);
-/* 	sem_wait(philo_eat->nb_eat);
-	sem_post(philo_eat->nb_eat);//switch <-> */
-	sem_post(philo_eat->eating);
+	sem_post(p->eating);
 	ft_usleep(philo_eat->eat_t);
 	sem_post(philo_eat->forks);
 	sem_post(philo_eat->forks);
@@ -70,11 +66,11 @@ void	routine(t_philo *p, t_main *philo)
 		eat_one(p);
 	else
 	{
-		while (1)
+		while (philo->dead_flag == false)
 		{
 			eating(p);
 			sem_wait(philo->done);
-			if (philo->done_eating == true || philo->dead_flag == true) // dr 3
+			if (philo->done_eating == true) // dr 3
 				break ;
 			sem_post(philo->done);
 			action(p, "is sleeping");
@@ -85,5 +81,4 @@ void	routine(t_philo *p, t_main *philo)
 	}
 	if (pthread_join(philo->p_id, NULL) != 0)
 		printf("Error\n");
-	exit (0);
 }
