@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/06 16:30:21 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/06 17:11:57 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ int	close_semaphores(t_main *p)
 		return (1);
 	if (sem_close(p->done) != 0)
 		return (1);
- 	if (sem_close(p->philo->eating) != 0)
+/*  	if (sem_close(p->philo->eating) != 0)
+	{
+		printf("eat faillll\n");
 		return (1);
+	} */
 	return (0);
 }
 
@@ -70,6 +73,9 @@ int	main(int argc, char **argv)
 		if (status)
 		{
 			i = -1;
+			i = -1;
+			while(++i < p->num_philos)
+				sem_close(&(p->philo->eating[i]));
 			while(++i < p->num_philos)
 				kill(p->pid[i], SIGTERM);
 		}

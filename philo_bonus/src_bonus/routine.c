@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/06 16:43:43 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/06 17:14:34 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,4 @@ void	routine(t_philo *p, t_main *philo)
 		exit (1);
 	}
 	exit (0);
-	
 }
