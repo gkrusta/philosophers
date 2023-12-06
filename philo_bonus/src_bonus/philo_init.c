@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/05 18:14:38 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/06 16:25:58 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ void	fill_philo_struct(t_main *p, int i)
 	p->philo->last_meal = get_time();
 	p->philo->rule = p;
 	sem_unlink(name);
-	p->philo->eating = sem_open(name, O_CREAT, 0644, 1);
+	p->philo->eating = sem_open(name, O_CREAT, 0700, 1);
 	p->start_t = get_time();
+	free (name);
 }
 
 int	create_philos(t_main *p)
@@ -75,8 +76,11 @@ int	create_philos(t_main *p)
 	{
 		p->pid[i] = fork();
 		if (p->pid[i] == -1)
-			printf("Error\n");
-		if (p->pid[i] == 0)
+		{
+			printf("Error while creating forks\n");
+			return (1);
+		}
+		else if (p->pid[i] == 0)
 		{
 			fill_philo_struct(p, i);
 			routine(p->philo, p);

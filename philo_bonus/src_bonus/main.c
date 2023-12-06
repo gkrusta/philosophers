@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/05 17:29:13 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/06 16:30:21 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,11 @@ int	close_semaphores(t_main *p)
 			return (1);
 		i++;
 	}
-	if (sem_close(p->nb_eat) != 0)
-		return (1);
-	if (sem_close(p->eating) != 0)
-		return (1);
 	if (sem_close(p->write) != 0)
 		return (1);
 	if (sem_close(p->done) != 0)
+		return (1);
+ 	if (sem_close(p->philo->eating) != 0)
 		return (1);
 	return (0);
 }
@@ -41,14 +39,6 @@ int	close_semaphores(t_main *p)
 
 void	ft_free(t_main *p)
 {
-/* 	int	i;
-
-	i = 0;
-	while (i < p->num_philos)
-	{
-		free(&(philo[i]));
-		i++;
-	} */
 	free(p->philo);
 	free(p->pid);
 	free(p);
@@ -77,13 +67,11 @@ int	main(int argc, char **argv)
 	while (i < p->num_philos)
 	{
 		waitpid(-1, &status, 0);
-		if (WIFEXITED(status))
-			printf("El proceso hijo ha salido con estado: %d\n", WEXITSTATUS(status));
-		i = 0;
-		while(i < p->num_philos)
+		if (status)
 		{
-			kill(p->pid[i], SIGTERM);
-			i++;
+			i = -1;
+			while(++i < p->num_philos)
+				kill(p->pid[i], SIGTERM);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/05 18:11:48 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/06 16:43:43 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	action(t_philo *p, char *str)
 {
 	sem_wait(p->rule->done);
-	if (p->rule->dead_flag == false && p->rule->done_eating == false)
+	if (!p->rule->done_eating)
 	{
 		sem_wait(p->rule->write);
 		printf("%lld %d %s\n", (get_time() - p->rule->start_t), p->id, str);
@@ -43,13 +43,13 @@ void	eating(t_philo *p)
 	action(p, "has taken a fork");
 	sem_wait(p->eating);
 	p->last_meal = get_time(); //dr 2
+	sem_post(p->eating);
 	action(p, "is eating");
 	sem_wait(philo_eat->done);
 	p->nb_eat++;
 	if (p->nb_eat >= philo_eat->meals && philo_eat->meals != -1)
 		philo_eat->done_eating = true;
 	sem_post(philo_eat->done);
-	sem_post(p->eating);
 	ft_usleep(philo_eat->eat_t);
 	sem_post(philo_eat->forks);
 	sem_post(philo_eat->forks);
@@ -61,7 +61,10 @@ void	routine(t_philo *p, t_main *philo)
 
 	i = 0;
 	if (pthread_create(&(philo->p_id), NULL, death_check, philo) != 0)
+	{
 		printf("Error\n");
+		exit (1);
+	}
 	if (philo->num_philos == 1)
 		eat_one(p);
 	else
@@ -80,5 +83,10 @@ void	routine(t_philo *p, t_main *philo)
 		sem_post(philo->done);
 	}
 	if (pthread_join(philo->p_id, NULL) != 0)
+	{
 		printf("Error\n");
+		exit (1);
+	}
+	exit (0);
+	
 }
