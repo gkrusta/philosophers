@@ -6,49 +6,17 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/06 17:00:28 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 12:45:50 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static int	ft_numblen(long n)
+int	err(char *str)
 {
-	int	count;
-
-	count = 1;
-	while (n >= 10)
-	{
-		n /= 10;
-		count++;
-	}
-	return (count);
-}
-
-char	*ft_itoa(int n)
-{
-	char	*result;
-	int		len;
-	long	nr;
-
-	nr = n;
-	if (nr < 0)
-		nr *= (-1);
-	len = ft_numblen(nr);
-	if (n < 0)
-		len++;
-	result = malloc(sizeof(char) * (len + 1));
-	if (!result)
-		return (NULL);
-	result[len--] = '\0';
-	while (len >= 0)
-	{
-		result[len--] = nr % 10 + '0';
-		nr /= 10;
-	}
-	if (n < 0)
-		result[0] = '-';
-	return (result);
+	while (*str)
+		write (2, str++, 1);
+	return (1);
 }
 
 void	fill_philo_struct(t_main *p, int i)
@@ -72,14 +40,13 @@ int	create_philos(t_main *p)
 
 	i = 0;
 	p->philo = malloc(sizeof(t_philo) * p->num_philos);
+	if (p->philo == NULL)
+		return(err("error: fatal\n"));
 	while (i < p->num_philos)
 	{
 		p->pid[i] = fork();
 		if (p->pid[i] == -1)
-		{
-			printf("Error while creating forks\n");
-			return (1);
-		}
+			return (err("error while creating forks\n"));
 		else if (p->pid[i] == 0)
 		{
 			fill_philo_struct(p, i);
@@ -104,10 +71,7 @@ int	init(char **argv, t_main *p)
 		p->meals = -1;
 	if (p->num_philos < 1 || p->num_philos > 200 || p->life_t < 1
 		|| p->eat_t < 1 || p->sleep_t < 1)
-	{
-		usage();
-		return (1);
-	}
+		return (usage());
 	sem_unlink("/forks");
 	sem_unlink("/write");
 	//sem_unlink("/eating");

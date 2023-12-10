@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/06 17:14:34 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 13:19:13 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	eating(t_philo *p)
 	sem_wait(philo_eat->forks);
 	action(p, "has taken a fork");
 	sem_wait(p->eating);
-	p->last_meal = get_time(); //dr 2
+	p->last_meal = get_time();
 	sem_post(p->eating);
 	action(p, "is eating");
 	sem_wait(philo_eat->done);
@@ -61,10 +61,7 @@ void	routine(t_philo *p, t_main *philo)
 
 	i = 0;
 	if (pthread_create(&(philo->p_id), NULL, death_check, philo) != 0)
-	{
-		printf("Error\n");
-		exit (1);
-	}
+		err("error: fatal\n");
 	if (philo->num_philos == 1)
 		eat_one(p);
 	else
@@ -73,7 +70,7 @@ void	routine(t_philo *p, t_main *philo)
 		{
 			eating(p);
 			sem_wait(philo->done);
-			if (philo->done_eating == true) // dr 3
+			if (philo->done_eating == true)
 				break ;
 			sem_post(philo->done);
 			action(p, "is sleeping");
@@ -83,9 +80,6 @@ void	routine(t_philo *p, t_main *philo)
 		sem_post(philo->done);
 	}
 	if (pthread_join(philo->p_id, NULL) != 0)
-	{
-		printf("Error\n");
-		exit (1);
-	}
+		err("error: fatal\n");
 	exit (0);
 }

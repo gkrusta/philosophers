@@ -6,13 +6,13 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 12:53:34 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/04 14:43:43 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 12:35:38 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	usage()
+int	usage()
 {
 	printf("-----------------\n");
 	printf("- How to use:\n");
@@ -21,26 +21,46 @@ void	usage()
 	printf("number of philosophers: 1-200\n");
 	printf("the rest of the parametrs has to be > 60 which will be representing miliseconds\n");
 	printf("-----------------\n");
+	return (1);
 }
 
-long long	get_time(void)
+int	ft_numblen(long n)
 {
-	struct timeval	tp;
-	
-	gettimeofday(&tp, NULL);
-	return ((tp.tv_sec * 1000) + (tp.tv_usec / 1000));
-}
+	int	count;
 
-void	ft_usleep(long long int time)
-{
-	long long int	i;
-
-	i = get_time();
-	while (1)
+	count = 1;
+	while (n >= 10)
 	{
-		if (get_time() - i >= time)
-			break;
+		n /= 10;
+		count++;
 	}
+	return (count);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*result;
+	int		len;
+	long	nr;
+
+	nr = n;
+	if (nr < 0)
+		nr *= (-1);
+	len = ft_numblen(nr);
+	if (n < 0)
+		len++;
+	result = malloc(sizeof(char) * (len + 1));
+	if (!result)
+		return (NULL);
+	result[len--] = '\0';
+	while (len >= 0)
+	{
+		result[len--] = nr % 10 + '0';
+		nr /= 10;
+	}
+	if (n < 0)
+		result[0] = '-';
+	return (result);
 }
 
 int	argv_check(char **argv)

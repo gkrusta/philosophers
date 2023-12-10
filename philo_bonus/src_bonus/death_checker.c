@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 13:05:24 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/06 16:59:55 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 13:41:50 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	time_over(t_main *p, t_philo *philo)
 	{
 		action(philo, "died");
 		sem_wait(p->write);
-		sem_wait(p->done);
+		//sem_wait(p->done);
 		p->dead_flag = true; // dr 3
-		sem_post(p->done);
+		//sem_post(p->done);
 		exit(1);
 	}
 	return ;

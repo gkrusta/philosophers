@@ -6,28 +6,29 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 10:55:04 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/06 17:00:03 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 13:41:35 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
-#include <pthread.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/time.h>
-#include <semaphore.h>
-#include <sys/types.h>
-#include <sys/cdefs.h>
-#include <signal.h>
+# include <pthread.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <stdbool.h>
+# include <unistd.h>
+# include <string.h>
+# include <sys/time.h>
+# include <semaphore.h>
+# include <sys/types.h>
+# include <sys/cdefs.h>
+# include <signal.h>
 
-struct s_main;
+struct	s_main;
 
-typedef struct		s_philo {
+typedef struct s_philo
+{
 	int				id;
 	int				nb_eat;
 	long long		last_meal;
@@ -37,7 +38,8 @@ typedef struct		s_philo {
 	sem_t			*eating;
 }					t_philo;
 
-typedef struct		s_main {
+typedef struct s_main
+{
 	int				num_philos;
 	bool			dead_flag;
 	bool			done_eating;
@@ -55,7 +57,8 @@ typedef struct		s_main {
 }					t_main;
 
 /* thread management */
-int	close_semaphores(t_main *p);
+int		close_semaphores(t_main *p);
+void	ft_free(t_main *p);
 
 /* death checker */
 void	time_over(t_main *p, t_philo *philo);
@@ -71,12 +74,17 @@ void	action(t_philo *p, char *str);
 int		init(char **argv, t_main *p);
 int		create_philos(t_main *p);
 void	fill_philo_struct(t_main *p, int i);
+int		err(char *str);
 
 /* utils */
-void		usage();
-int			argv_check(char **argv);
-int			ft_atoi(const char	*str);
+char	*ft_itoa(int n);
+int		ft_numblen(long n);
+int		usage(void);
+int		argv_check(char **argv);
+int		ft_atoi(const char *str);
+
+/* get time */
+void	ft_usleep(long long int time);
 long long	get_time(void);
-void		ft_usleep(long long int time);
 
 #endif

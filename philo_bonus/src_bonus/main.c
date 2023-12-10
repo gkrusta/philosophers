@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/06 17:11:57 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 13:16:12 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,10 @@ int	main(int argc, char **argv)
 	int		status;
 
 	if (argv_check(argv) == 1 || argc < 5 || argc > 7)
-	{
-		usage();
-		return (1);
-	}
+		return (usage());
 	p = malloc(sizeof(t_main));
 	if (p == NULL)
-		return (1);
+		return (err("error: fatal\n"));
 	if (init(argv, p) == 1)
 	{
 		free(p);
