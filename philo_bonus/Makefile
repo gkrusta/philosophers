@@ -6,7 +6,7 @@
 #    By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/24 13:15:24 by gkrusta           #+#    #+#              #
-#    Updated: 2023/12/10 13:15:26 by gkrusta          ###   ########.fr        #
+#    Updated: 2023/12/11 13:04:35 by gkrusta          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ $(NAME_BONUS): $(OBJS_BONUS)
 RM = rm -f
 
 clean:
-	@ $(RM) $(OBJS) $(OBJS_BONUS)
+	@ $(RM) $(OBJS_BONUS)
 	@ echo "\n\t\t\033[32mEverything is clean!\n"
 
 fclean: clean

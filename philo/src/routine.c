@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:40:47 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/28 16:25:28 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 15:54:50 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*eating(t_philo *p)
 
 	philo_eat = p->rule;
 	pthread_mutex_lock(&(philo_eat->forks[p->right_f]));
-	action(p,"has taken a fork");
+	action(p, "has taken a fork");
 	pthread_mutex_lock(&(philo_eat->forks[p->left_f]));
 	action(p, "has taken a fork");
 	pthread_mutex_lock(&(philo_eat->eating));
@@ -42,7 +42,7 @@ void	*eating(t_philo *p)
 	action(p, "is eating");
 	pthread_mutex_lock(&(philo_eat->nb_eat));
 	p->nb_eat++;
-	pthread_mutex_unlock(&(philo_eat->nb_eat));//switch <->
+	pthread_mutex_unlock(&(philo_eat->nb_eat));
 	pthread_mutex_unlock(&(philo_eat->eating));
 	ft_usleep(philo_eat->eat_t);
 	pthread_mutex_unlock(&(philo_eat->forks[p->right_f]));
@@ -68,7 +68,7 @@ void	*routine(void *void_p)
 			eating(p);
 			pthread_mutex_lock(&(p->rule->done));
 			if (p->rule->done_eating == 1 || p->rule->dead_flag == 1)
-				break;
+				break ;
 			pthread_mutex_unlock(&(p->rule->done));
 			action(p, "is sleeping");
 			ft_usleep(p->rule->sleep_t);

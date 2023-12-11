@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:53:50 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/11/30 13:19:13 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/10 16:00:14 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ int	control_threads(t_main *p)
 	p->start_t = get_time();
 	while (i < p->num_philos)
 	{
-		if (pthread_create(&(p->philo[i].p_id), NULL, routine, &(p->philo[i])) != 0)
+		if (pthread_create(&(p->philo[i].p_id), NULL, routine, &(p->philo[i]))
+			!= 0)
 			return (1);
 		i++;
 	}
-	death_check(p, p->philo); 
+	death_check(p, p->philo);
 	i = 0;
 	while (i < p->num_philos)
 	{
@@ -55,16 +56,10 @@ int	control_threads(t_main *p)
 	return (0);
 }
 
-/* void	ft_leaks(void)
-{
-	system("leaks -q philo");
-} */
-
 int	main(int argc, char **argv)
 {
 	t_main	*p;
-	
-	//atexit(ft_leaks);
+
 	if (argv_check(argv) == 1 || argc < 5 || argc > 7)
 	{
 		usage();

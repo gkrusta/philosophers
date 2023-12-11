@@ -6,7 +6,7 @@
 /*   By: gkrusta <gkrusta@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:23:12 by gkrusta           #+#    #+#             */
-/*   Updated: 2023/12/10 12:45:50 by gkrusta          ###   ########.fr       */
+/*   Updated: 2023/12/11 12:56:16 by gkrusta          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,25 @@ void	fill_philo_struct(t_main *p, int i)
 	free (name);
 }
 
+void	terminate_processes(t_main *p)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < p->num_philos)
+	{
+		waitpid(-1, &status, 0);
+		if (status)
+		{
+			i = -1;
+			while (++i < p->num_philos)
+				kill(p->pid[i], SIGTERM);
+		}
+		i++;
+	}
+}
+
 int	create_philos(t_main *p)
 {
 	int	i;
@@ -41,7 +60,7 @@ int	create_philos(t_main *p)
 	i = 0;
 	p->philo = malloc(sizeof(t_philo) * p->num_philos);
 	if (p->philo == NULL)
-		return(err("error: fatal\n"));
+		return (err("error: fatal\n"));
 	while (i < p->num_philos)
 	{
 		p->pid[i] = fork();
@@ -51,6 +70,7 @@ int	create_philos(t_main *p)
 		{
 			fill_philo_struct(p, i);
 			routine(p->philo, p);
+			printf("aftert rountine\n");
 		}
 		i++;
 	}
@@ -74,12 +94,10 @@ int	init(char **argv, t_main *p)
 		return (usage());
 	sem_unlink("/forks");
 	sem_unlink("/write");
-	//sem_unlink("/eating");
 	sem_unlink("/done");
 	p->pid = malloc(sizeof(pid_t) * p->num_philos);
 	p->forks = sem_open("/forks", O_CREAT, 0644, p->num_philos);
 	p->write = sem_open("/write", O_CREAT, 0644, 1);
-	//p->eating = sem_open("/eating", O_CREAT, 0644, 1);
 	p->done = sem_open("/done", O_CREAT, 0644, 1);
 	return (0);
 }
